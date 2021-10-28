@@ -8,7 +8,7 @@
 runModelOrig <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
                          uncRun=FALSE,easyInit=FALSE){
   print(paste("start sample ID: ",sampleID))
-  print(uncRun)
+
   if(uncRun){
     sampleX <- data.all[opsInd[,sampleID],] # choose random set of nSitesRun segments -- TEST / VJ!
   } else {
@@ -223,7 +223,7 @@ runModelOrig <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
         nas <- rbind(nas,nax)
       } 
       if(uncRun){
-      outSums <- rbind(outSums, data.table(varName <- varNames[varSel[ij]], iter <- sampleID, colSums(pX[,2:4])))
+      outSums <- rbind(outSums, data.table(vari = varNames[varSel[ij]], iter = sampleID, per1 = colSums(pX[,2])))
       } else {
       assign(varNames[varSel[ij]],pX)
       
