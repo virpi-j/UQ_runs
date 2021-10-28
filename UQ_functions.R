@@ -11,6 +11,7 @@ runModelOrig <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
 
   if(uncRun){
     sampleX <- data.all[opsInd[,sampleID],] # choose random set of nSitesRun segments -- TEST / VJ!
+    area_tot <- sum(data.all$area)
   } else {
     sampleX <- ops[[sampleID]]
   }
@@ -223,7 +224,9 @@ runModelOrig <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
         nas <- rbind(nas,nax)
       } 
       if(uncRun){
-      outSums <- rbind(outSums, data.table(vari = varNames[varSel[ij]], iter = sampleID, per1 = sum(pX[,2]), per2 = sum(pX[,3]), per3 = sum(pX[,4])))
+        cA <- area_tot/length(sampleX)
+        outSums <- rbind(outSums, data.table(vari = varNames[varSel[ij]], iter = sampleID, 
+                                             per1 = cA*sum(pX[,2]), per2 = cA*sum(pX[,3]), per3 = cA*sum(pX[,4])))
       } else {
       assign(varNames[varSel[ij]],pX)
       
@@ -257,7 +260,8 @@ runModelOrig <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   # }rcps loop
   print(paste("end sample ID",sampleID))
   rm(list=setdiff(ls(), c(toMem,"toMem", "outSums")))
-  if(uncRun) outSums
+  
+  if(uncRun) outSums # Output for uncertainty analysis
 }
 
 
