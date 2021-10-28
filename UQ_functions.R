@@ -5,7 +5,7 @@
 ## MAIN SCRIPT
 ## ---------------------------------------------------------------------
 
-runModelOrig <- function(sampleID,sampleRun=FALSEststDeadW=FALSE,
+runModelOrig <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
                          uncRun=FALSE,easyInit=FALSE){
   print(paste("start sample ID: ",sampleID))
   if(uncRun){
