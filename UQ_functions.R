@@ -223,7 +223,7 @@ runModelOrig <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
         nas <- rbind(nas,nax)
       } 
       if(uncRun){
-      outSums <- rbind(outSums, data.table(vari = varNames[varSel[ij]], iter = sampleID, per1 = sum(pX[,2]), per2 = sum(pX[,3]), , per3 = sum(pX[,4])))
+      outSums <- rbind(outSums, data.table(vari = varNames[varSel[ij]], iter = sampleID, per1 = sum(pX[,2]), per2 = sum(pX[,3]), per3 = sum(pX[,4])))
       } else {
       assign(varNames[varSel[ij]],pX)
       
