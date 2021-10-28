@@ -5,9 +5,10 @@
 ## MAIN SCRIPT
 ## ---------------------------------------------------------------------
 
-runModelOrig <- function(sampleID,sampleRun=FALSE){
+runModelOrig <- function(sampleID,sampleRun=FALSEststDeadW=FALSE,
+                         uncRun=FALSE,easyInit=FALSE){
   print(paste("start sample ID: ",sampleID))
-  if(UQanalysis){
+  if(uncRun){
     sampleX <- data.all[opsInd[,sampleID],] # choose random set of nSitesRun segments -- TEST / VJ!
   } else {
     sampleX <- ops[[sampleID]]
@@ -171,46 +172,20 @@ runModelOrig <- function(sampleID,sampleRun=FALSE){
   ## identify managed and unmanaged forests
   manFor <-  which(sampleX$cons==0)
   unmanFor <- which(sampleX$cons==1)
-  Dmort <- matrix(0,2,3)
-  for(ikl in 1:3) Dmort[1,ikl] <- median(region$multiOut[manFor,,12,ikl,1][which(region$multiOut[manFor,,41,ikl,1]>0.,arr.ind = T)])
-  if(length(unmanFor)>0) for(ikl in 1:3) Dmort[1,ikl] <- median(region$multiOut[unmanFor,,12,ikl,1][which(region$multiOut[unmanFor,,41,ikl,1]>0.,arr.ind = T)])
-  
-  pX <- pCROB[c(35:37,44),1:3]
-  
-  # Dmort <- 15   ###Diameter of dead trees
-  species <- 1:3 ####species ID
-  baPer <- matrix(0,2,3) ##### species Basal area
-  
-  totBAs <-apply(region$multiOut[,,13,,1],1:2,sum)
-  totBAs <- array(rep(totBAs,3),dim=c(region$nSites,nYears,3))
-  baPer[1,] <- apply(region$multiOut[manFor,,13,,1]/totBAs[manFor,,],3,mean,na.rm=T)
-  baPer[2,] <- apply(region$multiOut[unmanFor,,13,,1]/totBAs[unmanFor,,],3,mean,na.rm=T)
-  
-  nSp <- length(species) ####number of Species
-  deadVmanFor <- 5  ###initial dead Volume for managed forests
-  deadVunmanFor <- 100  ###initial dead Volume for unmanaged forests
-  
-  ###run model managed forests
-  deadVinitMan <- matrix(0,(nYears),nSp) ####deadWood matrix (nrow=years; ncol=species)
-  deadVinitX <- deadVmanFor * baPer[1,] ###choose between deadVmanFor and deadVunmanFor
-  for(i in 1:nYears){
-    deadVinitMan[(i),] = deadVinitX * exp(-exp(pX[1,] + 
-                                                 pX[2,]*i + pX[3,]*Dmort[1,] + mean(pX[4,])))
-  } 
-  region$multiOut[manFor,,8,,1] <- region$multiOut[manFor,,8,,1] + aperm(replicate(length(manFor),deadVinitMan),c(3,1:2))
-  
-  ###run model unmanaged forests
-  if(length(unmanFor)>0){
-    deadVinitUn <- matrix(0,(nYears),nSp) ####deadWood matrix (nrow=years; ncol=species)
-    deadVinitX <- deadVunmanFor * baPer[2,] ###choose between deadVmanFor and deadVunmanFor
-    for(i in 1:nYears){
-      deadVinitUn[(i),] = deadVinitX * exp(-exp(pX[1,] + 
-                                                  pX[2,]*i + pX[3,]*Dmort[2,] + pX[4,]))
-    } 
-    region$multiOut[unmanFor,,8,,1] <- region$multiOut[unmanFor,,8,,1] +
-      aperm(replicate(length(unmanFor),deadVinitMan),c(3,1:2))
+  if(ststDeadW){
+    unmanDeadW <- initDeadW(region,unmanFor,yearsDeadW)
+    manDeadW <- initDeadW(region,manFor,yearsDeadW)
+    save(unmanDeadW,manDeadW,file=paste0("initDeadWVss/reg",
+                                         r_no,"_deadWV.rdata"))
+    return("deadWood volume at steady state saved")
+  }else{
+    load(paste0("initDeadWVss/reg",
+                r_no,"_deadWV.rdata"))
+    region$multiOut[manFor,,8,,1] <- region$multiOut[manFor,,8,,1] + 
+      aperm(replicate(length(manFor),(unmanDeadW$ssDeadW[1:nYears,])),c(3,1:2))
   }
-  ####end initialize deadWood Volume
+  
+  #### end initialize deadWood Volume
   if(sampleRun){
     return(region)
   }else{        
@@ -223,6 +198,7 @@ runModelOrig <- function(sampleID,sampleRun=FALSE){
     #} 
     marginX = 1:2#(length(dim(out$annual[,,varSel,]))-1)
     nas <- data.table()
+    outSums <- data.table()
     for (ij in 1:length(varSel)) {
       # print(varSel[ij])
       if(funX[ij]=="baWmean"){
@@ -245,6 +221,9 @@ runModelOrig <- function(sampleID,sampleRun=FALSE){
         nax$sampleID <- sampleID
         nas <- rbind(nas,nax)
       } 
+      if(uncRun){
+      outSums <- rbind(outSums, data.table(varName <- varNames[varSel[ij]], iter <- sampleID, colSums(pX[,2:4])))
+      } else {
       assign(varNames[varSel[ij]],pX)
       
       save(list=varNames[varSel[ij]],file=paste0("Rsrc/virpiSbatch/results/reg",r_no,"_",
@@ -252,6 +231,7 @@ runModelOrig <- function(sampleID,sampleRun=FALSE){
                                                  harscen,"_",rcpfile,"_",
                                                  "sampleID",sampleID,".rdata"))
       rm(list=varNames[varSel[ij]]); gc()
+      }
     }
     #dev.off()
     # save NAs
@@ -261,10 +241,11 @@ runModelOrig <- function(sampleID,sampleRun=FALSE){
     }
     
     ####process and save special variales
+    if(!uncRun){
     print(paste("start special vars",sampleID))
     specialVarProc(sampleX,region,r_no,harscen,rcpfile,sampleID,
                    colsOut1,colsOut2,colsOut3,areas,sampleForPlots)
-    
+    }
   }
   
   # rm(list=c("region","initPrebas")); gc()
@@ -274,7 +255,8 @@ runModelOrig <- function(sampleID,sampleRun=FALSE){
   # } ###region loop
   # }rcps loop
   print(paste("end sample ID",sampleID))
-  rm(list=setdiff(ls(), c(toMem,"toMem")))
+  rm(list=setdiff(ls(), c(toMem,"toMem", "outSums")))
+  outSums
 }
 
 
