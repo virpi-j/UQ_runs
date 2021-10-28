@@ -8,6 +8,7 @@
 runModelOrig <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
                          uncRun=FALSE,easyInit=FALSE){
   print(paste("start sample ID: ",sampleID))
+  print(uncRun)
   if(uncRun){
     sampleX <- data.all[opsInd[,sampleID],] # choose random set of nSitesRun segments -- TEST / VJ!
   } else {
