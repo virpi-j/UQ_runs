@@ -48,7 +48,7 @@ if(UQanalysis){
 }
 
 #library(ff)
-
+uncRun <- TRUE
 #if(sampleRun){
 #  toMem <- ls()
 #  startRun <- Sys.time() 
