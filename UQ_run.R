@@ -47,7 +47,6 @@ if(UQanalysis){
   ops <- split(data.all, sample(1:nSamples, nrow(data.all), replace=T))
 }
 
-uncRun <- TRUE
 #library(ff)
 
 #if(sampleRun){
@@ -67,6 +66,7 @@ uncRun <- TRUE
   #print(paste0("Run time for ",nSamples," samples of size ", nSitesRun," = ",timeRun))
 
   toMem <- ls()
+  print("Start running...")
   startRun <- Sys.time() 
   sampleXs <- mclapply(sampleIDs, function(jx) {
     runModel(jx,  ## Do nothing for 10 seconds
@@ -74,20 +74,22 @@ uncRun <- TRUE
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   #}
 #}
+print("End running...")
+  
 save(sampleXs,file=paste0("Rsrc/virpiSbatch/results/samplex_",r_no,".rdata")) 
 setwd("Rsrc/virpiSbatch/")
 
 #source("postprocessResults.R")
 
 
+print("make histograms...")
 pdf(paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID_",r_no,".pdf"))
-
 m <- nrow(sampleXs[[1]])
 n <- length(sampleXs)
 varNams <-  sampleXs[[1]]["vari"]
 cS <- c(-16*16/10^12*44/12, 1, 1, 0.16^2)
   
-#par(mfrow=c(m,3))
+par(mfrow=c(m,3))
 #par(mfrow=c(1,1))
 for(j in 1:m){
   x <- data.frame()
@@ -102,3 +104,4 @@ for(j in 1:m){
   }
 }
 dev.off()
+print("histograms made")
