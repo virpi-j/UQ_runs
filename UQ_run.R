@@ -24,7 +24,7 @@ funX <- rep("sum",length(varSel))
 funX[match(varNames[c(7,11:12)],varNames[varSel])] <- "baWmean"
 #----------------------------------------------------------------------------
 
-sampleRun <- FALSE
+#sampleRun <- FALSE
 set.seed(10)
 #----------------------------------------------------------------------------
 
@@ -50,14 +50,14 @@ if(UQanalysis){
 uncRun <- TRUE
 #library(ff)
 
-if(sampleRun){
-  toMem <- ls()
-  startRun <- Sys.time() 
-  sampleX <- runModelOrig(sampleID,sampleRun=F, uncRun = uncRun)
-  endRun <- Sys.time()
-  timeRun <- endRun - startRun
-  print(paste0("Run time for sample size ", nSitesRun," = ",timeRun))
-} else {
+#if(sampleRun){
+#  toMem <- ls()
+#  startRun <- Sys.time() 
+#  sampleX <- runModelOrig(sampleID,sampleRun=F, uncRun = uncRun)
+#  endRun <- Sys.time()
+#  timeRun <- endRun - startRun
+#  print(paste0("Run time for sample size ", nSitesRun," = ",timeRun))
+#} else {
   #toMem <- ls()
   #startRun <- Sys.time() 
   #sampleXs <- lapply(sampleIDs[1:3], function(jx) {
@@ -73,7 +73,7 @@ if(sampleRun){
     uncRun = TRUE)}, 
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   #}
-}
+#}
 save(sampleXs,file=paste0("Rsrc/virpiSbatch/results/samplex_",r_no,".rdata")) 
 setwd("Rsrc/virpiSbatch/")
 
