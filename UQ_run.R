@@ -69,7 +69,7 @@ uncRun <- TRUE
   toMem <- ls()
   startRun <- Sys.time() 
   sampleXs <- mclapply(sampleIDs, function(jx) {
-    runModelOrig(jx,  ## Do nothing for 10 seconds
+    runModel(jx,  ## Do nothing for 10 seconds
     uncRun = TRUE)}, 
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   #}
@@ -88,7 +88,7 @@ varNams <-  sampleXs[[1]]["vari"]
 cS <- c(-16*16/10^12*44/12, 1, 1, 0.16^2)
   
 #par(mfrow=c(m,3))
-par(mfrow=c(1,1))
+#par(mfrow=c(1,1))
 for(j in 1:m){
   x <- data.frame()
   for(k in 1:n){
