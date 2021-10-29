@@ -87,7 +87,8 @@ n <- length(sampleXs)
 varNams <-  sampleXs[[1]]["vari"]
 cS <- c(-16*16/10^12*44/12, 1, 1, 0.16^2)
   
-par(mfrow=c(m,3))
+#par(mfrow=c(m,3))
+par(mfrow=c(1,1))
 for(j in 1:m){
   x <- data.frame()
   for(k in 1:n){
