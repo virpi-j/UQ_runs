@@ -69,7 +69,7 @@ uncRun <- TRUE
   print("Start running...")
   startRun <- Sys.time() 
   sampleXs <- mclapply(sampleIDs, function(jx) {
-    runModel(jx,  ## Do nothing for 10 seconds
+    runModelUQ(jx,  ## Do nothing for 10 seconds
     uncRun = TRUE)}, 
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   #}

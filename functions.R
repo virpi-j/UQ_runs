@@ -4,7 +4,7 @@
 ## ---------------------------------------------------------------------
 ## MAIN SCRIPT
 ## ---------------------------------------------------------------------
-runModel <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
+runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
                      uncRun=FALSE,easyInit=FALSE){
   # print(date())
   print(paste("start sample ID: ",sampleID))
