@@ -206,7 +206,9 @@ runModel <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   if(harscen=="Base"){
     initSoilC <- stXX_GV(region, 1)
     print(paste("initSoilC",sampleID))
-    save(initSoilC,file=paste0("initSoilC/forCent",r_no,"/initSoilC_",sampleID,".rdata"))
+    if(!uncRun){
+      save(initSoilC,file=paste0("initSoilC/forCent",r_no,"/initSoilC_",sampleID,".rdata"))
+    }
     ###run yasso (starting from steady state) using PREBAS litter
     region <- yassoPREBASin(region,initSoilC)
     # out <- region$multiOut[,,,,1]
@@ -236,7 +238,7 @@ runModel <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   }else{
     
     ####create pdf for test plots
-    if(sampleID==sampleForPlots){
+    if(sampleID==sampleForPlots & !uncRun){
       pdf(paste0("plots/testPlots_",r_no,"_",
                  harscen,"_",rcpfile,".pdf"))
       out <- region$multiOut
