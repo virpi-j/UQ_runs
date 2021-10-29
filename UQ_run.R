@@ -69,7 +69,7 @@ if(sampleRun){
   toMem <- ls()
   startRun <- Sys.time() 
   sampleXs <- mclapply(sampleIDs, function(jx) {
-    runModelOrig(jx),  ## Do nothing for 10 seconds
+    runModelOrig(jx,  ## Do nothing for 10 seconds
     uncRun = TRUE)}, 
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   }
