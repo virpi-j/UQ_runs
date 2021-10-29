@@ -206,9 +206,8 @@ runModel <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   if(harscen=="Base"){
     initSoilC <- stXX_GV(region, 1)
     print(paste("initSoilC",sampleID))
-    if(!uncRun){
-      save(initSoilC,file=paste0("initSoilC/forCent",r_no,"/initSoilC_",sampleID,".rdata"))
-    }
+    save(initSoilC,file=paste0("initSoilC/forCent",r_no,"/initSoilC_",sampleID,".rdata"))
+    
     ###run yasso (starting from steady state) using PREBAS litter
     region <- yassoPREBASin(region,initSoilC)
     # out <- region$multiOut[,,,,1]
