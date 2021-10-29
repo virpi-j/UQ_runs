@@ -317,8 +317,10 @@ runModel <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   } else {
     rm(list=setdiff(ls(), c(toMem,"toMem")))
   }
-  if(uncRun) outSums # Output for uncertainty analysis
-    
+  if(uncRun){
+    print(outSums)
+    outSums # Output for uncertainty analysis
+  }  
 }
 
 sample_data.f = function(data.all, nSample) {
