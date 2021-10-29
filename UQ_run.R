@@ -78,3 +78,26 @@ save(sampleXs,file=paste0("Rsrc/virpiSbatch/results/samplex_",r_no,".rdata"))
 setwd("Rsrc/virpiSbatch/")
 
 #source("postprocessResults.R")
+
+
+pdf(paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID_",r_no,".pdf"))
+
+m <- nrow(sampleXs[[1]])
+n <- length(sampleXs)
+varNams <-  sampleXs[[1]]["vari"]
+cS <- c(-16*16/10^12*44/12, 1, 1, 0.16^2)
+  
+par(mfrow=c(m,3))
+for(j in 1:m){
+  x <- data.frame()
+  for(k in 1:n){
+    x <- rbind(x, sampleXs[[k]][j,])
+  }
+  x[,3:5] <- x[,3:5]*cS[j]
+  assign(varNams[j,1], x)
+  xlims <- c(min(x[,3:5]),max(x[,3:5]))
+  for(per in 1:3){
+    hist(x[,2+per], main = paste0("period",per), xlab = varNams[j,1], xlim = xlims)  
+  }
+}
+dev.off()
