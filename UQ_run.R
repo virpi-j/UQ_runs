@@ -29,7 +29,6 @@ set.seed(10)
 uncRun <- TRUE
 
 #----------------------------------------------------------------------------
-nSitesRun <- 200
 if(uncRun){ 
   sampleIDs <- 1:nSamples
   area_total <- sum(data.all$area)
