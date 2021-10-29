@@ -72,7 +72,7 @@ if(sampleRun){
     runModelOrig(jx,  ## Do nothing for 10 seconds
     uncRun = TRUE)}, 
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
-  }
+  #}
 }
 save(sampleXs,file=paste0("Rsrc/virpiSbatch/results/samplex_",r_no,".rdata")) 
 setwd("Rsrc/virpiSbatch/")
