@@ -27,6 +27,7 @@ funX[match(varNames[c(7,11:12)],varNames[varSel])] <- "baWmean"
 #sampleRun <- FALSE
 set.seed(10)
 uncRun <- TRUE
+nSitesRun <- 100
 
 #----------------------------------------------------------------------------
 if(uncRun){ 
@@ -60,13 +61,13 @@ if(uncRun){
   toMem <- ls()
   print("Start running...")
   startRun <- Sys.time() 
-  #sampleXs <- lapply(sampleIDs[1:3], function(jx) {
-  #  runModelUQ(jx,  ## Do nothing for 10 seconds
-  #  uncRun = TRUE)})      ## Split this job across 10 cores
-  sampleXs <- mclapply(sampleIDs, function(jx) {
+  sampleXs <- lapply(sampleIDs[1:3], function(jx) {
     runModelUQ(jx,  ## Do nothing for 10 seconds
-    uncRun = TRUE)}, 
-    mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
+    uncRun = TRUE)})      ## Split this job across 10 cores
+  #sampleXs <- mclapply(sampleIDs, function(jx) {
+  #  runModelUQ(jx,  ## Do nothing for 10 seconds
+  #  uncRun = TRUE)}, 
+  #  mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   timeRun <- Sys.time() - startRun
   print(paste0("Run time for ",nSamples," samples of size ", nSitesRun," = ",timeRun))
   #}
