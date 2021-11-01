@@ -64,7 +64,7 @@ if(uncRun){
   #sampleXs <- lapply(sampleIDs[1:10], function(jx) {
   #  runModelUQ(jx,  ## Do nothing for 10 seconds
   #  uncRun = TRUE)})      
-  sampleXs <- mclapply(sampleIDs[1:3], function(jx) {
+  sampleXs <- mclapply(sampleIDs, function(jx) {
     runModelUQ(jx,  ## Do nothing for 10 seconds
     uncRun = uncRun)}, 
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
