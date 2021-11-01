@@ -11,13 +11,18 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   
   if(uncRun){
     sampleX <- data.all[opsInd[,sampleID],] # choose random set of nSitesRun segments -- TEST / VJ!
-    area_tot <- sum(data.all$area)
+    area_tot <- sum(data.all$area) # ha
+    area_sample <- length(opsInd[,sampleID])*0.16*0.16 # ha
   } else {
     sampleX <- ops[[sampleID]]
   }
-  sampleX[,area := N*16^2/10000]
+  sampleX[,area := N*16^2/10000] 
   sampleX[,id:=climID]
-  HarvLimX <- harvestLims * sum(sampleX$area)/sum(data.all$area)
+  if(uncRun){   
+    HarvLimX <- harvestLims * sum(sampleX$area)/sum(data.all$area)
+  } else {
+  HarvLimX <- harvestLims * area_sample/area_tot
+  }
   nSample = nrow(sampleX)#200#nrow(data.all)
   ## Loop management scenarios
   # harvestscenarios = c("Policy", "MaxSust", "Base","Low","Tapio","NoHarv") ## noharv must be the last element otherwise cons area are ignored
@@ -273,7 +278,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
         nas <- rbind(nas,nax)
       } 
       if(uncRun){
-        cA <- area_tot/nrow(pX)
+        cA <- area_tot/area_sample # ha / ha
         outSums <- rbind(outSums, data.table(vari = varNames[varSel[ij]], 
                                              iter = sampleID, 
                                              per1 = cA*sum(pX[,2]), 
