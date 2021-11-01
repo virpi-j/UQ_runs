@@ -37,23 +37,24 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   i = 0
   # load("/scratch/project_2000994/PREBASruns/metadata/initSoilCstst.rdata")
   # load("outSoil/InitSoilCstst_Base.rdata")
-  rcpfile = rcps
-  # for(rcpfile in rcps) { ## ---------------------------------------------
-  # print(rcpfile)
-  if(rcpfile=="CurrClim"){
-    load(paste(climatepath, rcpfile,".rdata", sep=""))  
-    #####process data considering only current climate###
-    # dat <- dat[rday %in% 1:10958] #uncomment to select some years (10958 needs to be modified)
-    maxRday <- max(dat$rday)
-    xday <- c(dat$rday,(dat$rday+maxRday),(dat$rday+maxRday*2))
-    dat = rbind(dat,dat,dat)
-    dat[,rday:=xday]
+  if(!uncRun){
+    rcpfile = rcps
+    # for(rcpfile in rcps) { ## ---------------------------------------------
+    #  print(rcpfile)
+    if(rcpfile=="CurrClim"){
+      load(paste(climatepath, rcpfile,".rdata", sep=""))  
+      #####process data considering only current climate###
+      # dat <- dat[rday %in% 1:10958] #uncomment to select some years (10958 needs to be modified)
+      maxRday <- max(dat$rday)
+      xday <- c(dat$rday,(dat$rday+maxRday),(dat$rday+maxRday*2))
+      dat = rbind(dat,dat,dat)
+      dat[,rday:=xday]
     
-  } else{
-    load(paste(climatepath, rcpfile,".rdata", sep=""))  
-  }
-  # load("C:/Users/minunno/Documents/research/lukeDB/example #2/CanESM2.rcp45.rdata")
-  
+    } else{
+      load(paste(climatepath, rcpfile,".rdata", sep=""))  
+    }
+    # load("C:/Users/minunno/Documents/research/lukeDB/example #2/CanESM2.rcp45.rdata")
+  }  
   ## Loop regions -------------------------------------------------------
   # for (r_no in regions) {
   # print(date())
