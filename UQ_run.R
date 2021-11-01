@@ -61,12 +61,12 @@ if(uncRun){
   toMem <- ls()
   print("Start running...")
   startRun <- Sys.time() 
-  #sampleXs <- lapply(sampleIDs[1:3], function(jx) {
+  #sampleXs <- lapply(sampleIDs[1:10], function(jx) {
   #  runModelUQ(jx,  ## Do nothing for 10 seconds
-  #  uncRun = TRUE)})      ## Split this job across 10 cores
-  sampleXs <- mclapply(sampleIDs, function(jx) {
+  #  uncRun = TRUE)})      
+  sampleXs <- mclapply(sampleIDs[1:3], function(jx) {
     runModelUQ(jx,  ## Do nothing for 10 seconds
-    uncRun = TRUE)}, 
+    uncRun = uncRun)}, 
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   timeRun <- Sys.time() - startRun
   print(paste0("Run time for ",nSamples," samples of size ", nSitesRun," = ",timeRun))
