@@ -247,7 +247,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
     marginX= 1:2#(length(dim(out$annual[,,varSel,]))-1)
     nas <- data.table()
     
-    if(uncRun) outSums <- data.table()
+    outSums <- data.table()
     
     for (ij in 1:length(varSel)) {
       # print(varSel[ij])
@@ -313,10 +313,9 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   print(paste("end sample ID",sampleID))
   rm(list=setdiff(ls(), c(toMem,"toMem", "outSums"))) # don't delete result
 
-  if(uncRun){
-    print(outSums)
-    outSums # Output for uncertainty analysis
-  }  
+  print(uncRun)
+  print(outSums)
+  outSums # Output for uncertainty analysis
 }
 
 sample_data.f = function(data.all, nSample) {
