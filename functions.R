@@ -185,7 +185,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   # region <- regionPrebas(initPrebas)
   ###run PREBAS
   if(harscen!="Base"){
-    load(paste0("initSoilC/forCent",r_no,"/initSoilC_",sampleID,".rdata"))
+    load(paste0("Rsrc/virpiSbatch/initSoilC/forCent",r_no,"/initSoilC_",sampleID,".rdata"))
     initPrebas$yassoRun <- rep(1,initPrebas$nSites)
     initPrebas$soilC[,1,,,] <- initSoilC
   }
@@ -206,7 +206,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   if(harscen=="Base"){
     initSoilC <- stXX_GV(region, 1)
     print(paste("initSoilC",sampleID))
-    save(initSoilC,file=paste0("initSoilC/forCent",r_no,"/initSoilC_",sampleID,".rdata"))
+    save(initSoilC,file=paste0("Rsrc/virpiSbatch/initSoilC/forCent",r_no,"/initSoilC_",sampleID,".rdata"))
     
     ###run yasso (starting from steady state) using PREBAS litter
     region <- yassoPREBASin(region,initSoilC)
@@ -225,8 +225,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
                                          r_no,"_deadWV.rdata"))
     return("deadWood volume at steady state saved")
   }else{
-    load(paste0("initDeadWVss/reg",
-                r_no,"_deadWV.rdata"))
+    load(paste0("initDeadWVss/reg",r_no,"_deadWV.rdata"))
     region$multiOut[manFor,,8,,1] <- region$multiOut[manFor,,8,,1] + 
       aperm(replicate(length(manFor),(unmanDeadW$ssDeadW[1:nYears,])),c(3,1:2))
   }
@@ -238,10 +237,10 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
     
     ####create pdf for test plots
     if(sampleID==sampleForPlots & !uncRun){
-      pdf(paste0("plots/testPlots_",r_no,"_",
+      pdf(paste0("Rsrc/virpiSbatch/plots/testPlots_",r_no,"_",
                  harscen,"_",rcpfile,".pdf"))
       out <- region$multiOut
-      save(out,file = paste0("outputDT/forCent",r_no,"/testData.rdata"))
+      save(out,file = paste0("Rsrc/virpiSbatch/outputDT/forCent",r_no,"/testData.rdata"))
       rm(out);gc()
     } 
     marginX= 1:2#(length(dim(out$annual[,,varSel,]))-1)
@@ -293,14 +292,14 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
     }
     # save NAs
     if(nrow(nas)>0){
-      save(nas,file=paste0("NAs/NAs_forCent",r_no,"_","sampleID",sampleID,
+      save(nas,file=paste0("Rsrc/virpiSbatch/results/NAs_forCent",r_no,"_","sampleID",sampleID,
                            "_",harscen,"_",rcpfile,".rdata"))        
     }
     
     ####process and save special variales
-    print(paste("start special vars",sampleID))
-    specialVarProc(sampleX,region,r_no,harscen,rcpfile,sampleID,
-                   colsOut1,colsOut2,colsOut3,areas,sampleForPlots)
+    #print(paste("start special vars",sampleID))
+    #specialVarProc(sampleX,region,r_no,harscen,rcpfile,sampleID,
+    #               colsOut1,colsOut2,colsOut3,areas,sampleForPlots)
     
   }
   
