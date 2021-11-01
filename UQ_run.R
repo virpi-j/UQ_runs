@@ -85,7 +85,7 @@ pdf(paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures
 m <- nrow(sampleXs[[1]])
 n <- length(sampleXs)
 varNams <-  sampleXs[[1]][,"vari"]
-cS <- c(-44/12/10^12/0.16^2*16^2, 16^2, 16^2, 0.16^2)
+cS <- c(-44/12/10^12, 16^2, 16^2, 0.16^2)
   # g /m2 /year -> -44/12*16^2/10^12
 # g/m2/a -> area_tot *(g/m2/a * area_sample)/area_sample
 
