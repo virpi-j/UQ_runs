@@ -74,7 +74,7 @@ if(rcpfile=="CurrClim"){
   load(paste(climatepath, rcpfile,".rdata", sep=""))  
 }
 ##
-niter <- ceiling(nSamples/5)
+niter <- ceiling(nSamples/nParRuns)
 
 sampleOutput <- list()
 
@@ -90,7 +90,7 @@ for(nii in 1:niter){
     uncRun = uncRun)}, 
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   timeRun <- Sys.time() - startRun
-  print(paste0("Run time for ",nSamples," samples of size ", nSitesRun," = ",timeRun))
+  print(paste0("Run time for ",nParRuns," samples of size ", nSitesRun," = ",timeRun))
   print("End running...")
 
   save(sampleXs,file=paste0("Rsrc/virpiSbatch/results/samplex_",r_no,".rdata")) 
