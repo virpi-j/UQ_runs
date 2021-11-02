@@ -74,7 +74,7 @@ if(rcpfile=="CurrClim"){
   load(paste(climatepath, rcpfile,".rdata", sep=""))  
 }
 ##
-niter <- ceiling(nSamples/5)
+niter <- ceiling(nSamples/10)
 
 sampleOutput <- list()
 
