@@ -18,11 +18,11 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   }
   sampleX[,area := N*16^2/10000] 
   sampleX[,id:=climID]
-  if(uncRun){   
-    HarvLimX <- harvestLims * sum(sampleX$area)/sum(data.all$area)
-  } else {
+  #if(uncRun){   
+  #  HarvLimX <- harvestLims * sum(sampleX$area)/sum(data.all$area)
+  #} else {
   HarvLimX <- harvestLims * area_sample/area_tot
-  }
+  #}
   nSample = nrow(sampleX)#200#nrow(data.all)
   ## Loop management scenarios
   # harvestscenarios = c("Policy", "MaxSust", "Base","Low","Tapio","NoHarv") ## noharv must be the last element otherwise cons area are ignored
