@@ -108,34 +108,36 @@ for(nii in 1:niter){
     }
     x[,3:5] <- x[,3:5]*cS[j]
     #assign(varNams[j,1], x)
-    sampleOutputx[[j]][((nii-1)*5):(nii*5),] <- x
+    sampleOutputx[[j]][(1+(nii-1)*5):(nii*5),] <- x
   }
+  save(sampleOutputx,file=paste0("Rsrc/virpiSbatch/results/samplexout_",r_no,".rdata")) 
+  
 }
   #source("postprocessResults.R")
 
-print("make histograms...")
-pdf(paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID_",r_no,".pdf"))
-m <- nrow(sampleXs[[1]])
-n <- length(sampleXs)
-varNams <-  sampleXs[[1]][,"vari"]
-cS <- c(-44/12/10^12, 16^2, 16^2, 0.16^2)
-  # g /m2 /year -> -44/12*16^2/10^12
-# g/m2/a -> area_tot *(g/m2/a * area_sample)/area_sample
+#print("make histograms...")
+#pdf(paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID_",r_no,".pdf"))
+#m <- nrow(sampleXs[[1]])
+#n <- length(sampleXs)
+#varNams <-  sampleXs[[1]][,"vari"]
+#cS <- c(-44/12/10^12, 16^2, 16^2, 0.16^2)
+#  # g /m2 /year -> -44/12*16^2/10^12
+## g/m2/a -> area_tot *(g/m2/a * area_sample)/area_sample
 
-par(mfrow=c(m,3))
-#par(mfrow=c(1,1))
-for(j in 1:m){
-  x <- data.frame()
-  for(k in 1:n){
-    x <- rbind(x, sampleXs[[k]][j,])
-  }
-  x[,3:5] <- x[,3:5]*cS[j]
-  #assign(varNams[j,1], x)
-  xlims <- c(min(x[,3:5]),max(x[,3:5]))
-  for(per in 1:3){
-    hist(x[,2+per], main = paste0("period",per), xlab = varNams[j], xlim = xlims)  
-  }
-}
+#par(mfrow=c(m,3))
+##par(mfrow=c(1,1))
+#for(j in 1:m){
+#  x <- data.frame()
+#  for(k in 1:n){
+#    x <- rbind(x, sampleXs[[k]][j,])
+#  }
+#  x[,3:5] <- x[,3:5]*cS[j]
+#  #assign(varNams[j,1], x)
+#  xlims <- c(min(x[,3:5]),max(x[,3:5]))
+#  for(per in 1:3){
+#    hist(x[,2+per], main = paste0("period",per), xlab = varNams[j], xlim = xlims)  
+#  }
+#}
 
-dev.off()
-print("histograms made")
+#dev.off()
+#print("histograms made")
