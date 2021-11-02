@@ -85,13 +85,13 @@ for(nii in 1:niter){
   toMem <- ls()
   print(paste0("Start running iter ",nii,"/",niter,"..."))
   startRun <- Sys.time() 
-  sampleXs <- lapply(sampleIDs[1:4], function(jx) {
-    runModelUQ(jx,  ## Do nothing for 10 seconds
-    uncRun = TRUE, ststDeadW=FALSE)})      
-  #sampleXs <- mclapply(sampleIDs[(1+(nii-1)*nParRuns):(nii*nParRuns)], function(jx) {
+  #sampleXs <- lapply(sampleIDs[1:4], function(jx) {
   #  runModelUQ(jx,  ## Do nothing for 10 seconds
-  #  uncRun = uncRun)}, 
-  #  mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
+  #  uncRun = TRUE, ststDeadW=FALSE)})      
+  sampleXs <- mclapply(sampleIDs[(1+(nii-1)*nParRuns):(nii*nParRuns)], function(jx) {
+    runModelUQ(jx,  ## Do nothing for 10 seconds
+    uncRun = uncRun)}, 
+    mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   timeRun <- Sys.time() - startRun
   print(paste0("Run time for ",nParRuns," samples of size ", nSitesRun," = ",timeRun))
   print("End running...")
