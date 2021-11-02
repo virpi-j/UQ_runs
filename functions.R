@@ -321,7 +321,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
 
   #print(uncRun)
   #print(outSums)
-  if(uncRun) outSums # Output for uncertainty analysis
+  outSums # Output for uncertainty analysis
 }
 
 sample_data.f = function(data.all, nSample) {
