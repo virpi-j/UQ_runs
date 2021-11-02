@@ -80,7 +80,7 @@ sampleOutput <- list()
 
 for(nii in 1:niter){
   toMem <- ls()
-  print("Start running iter ",nii,"/",niter,"...")
+  print(paste0("Start running iter ",nii,"/",niter,"..."))
   startRun <- Sys.time() 
   #sampleXs <- lapply(sampleIDs[1:2], function(jx) {
   #  runModelUQ(jx,  ## Do nothing for 10 seconds
