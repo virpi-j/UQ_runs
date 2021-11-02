@@ -37,7 +37,10 @@ if(uncRun){
   
   print(paste0("Sample size ",nSitesRun," segments"))
   opsInd <- matrix(0, nSitesRun, nSamples) 
-  for(ij in 1:nSamples) opsInd[,ij] <- sample(1:nrow(data.all), nSitesRun, replace = TRUE, prob = areas)
+  for(ij in 1:nSamples){ 
+    opsInd[,ij] <- sample(1:nrow(data.all), nSitesRun, replace = TRUE, prob = areas)
+    #opsInd[,ij] <- sample(1:nrow(data.all), nSitesRun, replace = TRUE, prob = areas)
+  }
   save(opsInd,file=paste0("Rsrc/virpiSbatch/results/opsInd_reg",r_no,".rdata")) 
 } else {
   setX=1
@@ -82,13 +85,13 @@ for(nii in 1:niter){
   toMem <- ls()
   print(paste0("Start running iter ",nii,"/",niter,"..."))
   startRun <- Sys.time() 
-  #sampleXs <- lapply(sampleIDs[1:2], function(jx) {
-  #  runModelUQ(jx,  ## Do nothing for 10 seconds
-  #  uncRun = TRUE)})      
-  sampleXs <- mclapply(sampleIDs[(1+(nii-1)*nParRuns):(nii*nParRuns)], function(jx) {
+  sampleXs <- lapply(sampleIDs[1:4], function(jx) {
     runModelUQ(jx,  ## Do nothing for 10 seconds
-    uncRun = uncRun)}, 
-    mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
+    uncRun = TRUE, ststDeadW=FALSE)})      
+  #sampleXs <- mclapply(sampleIDs[(1+(nii-1)*nParRuns):(nii*nParRuns)], function(jx) {
+  #  runModelUQ(jx,  ## Do nothing for 10 seconds
+  #  uncRun = uncRun)}, 
+  #  mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
   timeRun <- Sys.time() - startRun
   print(paste0("Run time for ",nParRuns," samples of size ", nSitesRun," = ",timeRun))
   print("End running...")

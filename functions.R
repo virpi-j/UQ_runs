@@ -26,49 +26,27 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   nSample = nrow(sampleX)#200#nrow(data.all)
   ## Loop management scenarios
   # harvestscenarios = c("Policy", "MaxSust", "Base","Low","Tapio","NoHarv") ## noharv must be the last element otherwise cons area are ignored
-  # WRITEREGIONDATA = TRUE
-  
+
   # climatepath = "/scratch/project_2000994/RCP/"
-  
   # regionsummaries = data.table()
-  
   
   ## ---------------------------------------------------------
   i = 0
-  # load("/scratch/project_2000994/PREBASruns/metadata/initSoilCstst.rdata")
-  # load("outSoil/InitSoilCstst_Base.rdata")
   if(!uncRun){
     rcpfile = rcps
-    # for(rcpfile in rcps) { ## ---------------------------------------------
-    #  print(rcpfile)
     if(rcpfile=="CurrClim"){
       load(paste(climatepath, rcpfile,".rdata", sep=""))  
       #####process data considering only current climate###
-      # dat <- dat[rday %in% 1:10958] #uncomment to select some years (10958 needs to be modified)
       maxRday <- max(dat$rday)
       xday <- c(dat$rday,(dat$rday+maxRday),(dat$rday+maxRday*2))
       dat = rbind(dat,dat,dat)
       dat[,rday:=xday]
-    
     } else{
       load(paste(climatepath, rcpfile,".rdata", sep=""))  
     }
     # load("C:/Users/minunno/Documents/research/lukeDB/example #2/CanESM2.rcp45.rdata")
   }  
   ## Loop regions -------------------------------------------------------
-  # for (r_no in regions) {
-  # print(date())
-  # print(paste("Region", r_no) )
-  # r_no=7
-  ## Load samples from regions; region-files include every 1000th pixel
-  ## Pixel data are from 16 m x 16 m cells, but all numbers are per unit area.
-  ## Model also produces per values  per hectar or m2.
-  ## Note also that some of the pixels are non-forest (not metsamaa, kitumaa, joutomaa)
-  ## or not inside Finland (32767) or may be cloudcovered (32766).
-  
-  # data.all = fread(paste(regiondatapath, "data.proc.", r_no, ".txt", sep=""))
-  # data.all = fread(paste("data.proc.", r_no, ".txt",sep=""))
-  # dat = dat[id %in% data.all[, unique(id)]]
   gc()
   ## Prepare the same initial state for all harvest scenarios that are simulated in a loop below
   data.sample = sample_data.f(sampleX, nSample)
@@ -87,15 +65,8 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   ###set parameters
   #    initPrebas$pCROBAS <- pCROBAS
   
-  
   opsna <- which(is.na(initPrebas$multiInitVar))
   initPrebas$multiInitVar[opsna] <- 0.
-  
-  # initSoil <- aperm(initPrebas$soilC,c(3:5,1,2))
-  # initSoil[,,1,,1] <- initSoilCstst[[r_no]]
-  # initSoil <- aperm(initSoil,c(4,5,1:3))
-  # initPrebas$soilC <- initSoil
-  # if(exists("soilCststXX")) initPrebas$soilC[,1,,,] <- soilCststXX[[sampleID]]$soilC
   
   ##here mix years for weather inputs for Curr Climate
   if(rcpfile=="CurrClim"){
@@ -110,13 +81,8 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   
   # Loop management scenarios ------------------------------------------------
   harscen = harvestscenarios
-  # for(harscen in harvestscenarios) { ## MaxSust fails, others worked.
-  # print(date())
-  # print(harscen)
   i = i + 1
-  # print(paste(i, (length(harvestscenarios)*length(rcps)*length(regions)), sep="/"))
-  # harscen ="Base"
-  
+
   ## Assign harvesting quota for the region based on volume (in NFI startingYear) and MELA
   if(regSets!="maakunta"){
     Region = nfiareas[ID==r_no, Region]
@@ -182,14 +148,9 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   fThinX <- cbind(fThinX[1:nYears],0.)
   cutArX <- cbind(clcutArX,tendX)
   cutArX <- cbind(cutArX,fThinX)
-  # }else{
-  #   cutArX <- NA
-  # }
-  # initPrebas$energyCut <- rep(0.,length(initPrebas$energyCut))
-  # HarvLim1 <- rep(0,2)
-  # save(initPrebas,HarvLim1,file=paste0("test1",harscen,".rdata"))
-  # region <- regionPrebas(initPrebas)
+
   ###run PREBAS
+  print(paste("runModel",sampleID))
   if(harscen!="Base"){
     load(paste0("Rsrc/virpiSbatch/initSoilC/forCent",r_no,"/initSoilC_",sampleID,".rdata"))
     initPrebas$yassoRun <- rep(1,initPrebas$nSites)
@@ -207,7 +168,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
                            compHarv=compHarvX)
   }
   
-  print(paste("runModel",sampleID))
+  print(paste("... finished run Model",sampleID))
   ##calculate steady state carbon from prebas litter 
   if(harscen=="Base"){
     initSoilC <- stXX_GV(region, 1)
@@ -246,7 +207,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
       pdf(paste0("Rsrc/virpiSbatch/plots/testPlots_",r_no,"_",
                  harscen,"_",rcpfile,".pdf"))
       out <- region$multiOut
-      save(out,file = paste0("Rsrc/virpiSbatch/outputDT/forCent",r_no,"/testData.rdata"))
+      save(out,file = paste0("Rsrc/virpiSbatch/plots/forCent",r_no,"testData.rdata"))
       rm(out);gc()
     } 
     marginX= 1:2#(length(dim(out$annual[,,varSel,]))-1)
@@ -264,14 +225,18 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
       }
       ####test plot
       # print(outX)
-      if(sampleID==sampleForPlots){testPlot(outX,varNames[varSel[ij]],areas)}
+      #if(sampleID==sampleForPlots){testPlot(outX,varNames[varSel[ij]],areas)}
       
       p1 <- outX[, .(per1 = rowMeans(.SD,na.rm=T)), .SDcols = colsOut1, by = segID] 
       p2 <- outX[, .(per2 = rowMeans(.SD,na.rm=T)), .SDcols = colsOut2, by = segID] 
       p3 <- outX[, .(per3 = rowMeans(.SD,na.rm=T)), .SDcols = colsOut3, by = segID] 
-      pX <- merge(p1,p2)
-      pX <- merge(pX,p3)
-      ##check for NAs
+      if(!uncRun){
+        pX <- merge(p1,p2)
+        pX <- merge(pX,p3)
+      } else {
+        pX <- data.table(p1,p2[,2],p3[,2]) # can be the same segment multiple times
+      }
+              ##check for NAs
       nax <- data.table(segID=unique(which(is.na(pX),arr.ind=T)[,1]))
       if(nrow(nax)>0){
         nax$var <- varNames[varSel[ij]]
