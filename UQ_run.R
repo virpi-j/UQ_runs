@@ -94,8 +94,7 @@ for(nii in 1:niter){
   print("End running...")
 
   save(sampleXs,file=paste0("Rsrc/virpiSbatch/results/samplex_",r_no,".rdata")) 
-  setwd("Rsrc/virpiSbatch/")
-
+  
   m <- nrow(sampleXs[[1]])
   n <- length(sampleXs)
   varNams <-  sampleXs[[1]][,"vari"]
@@ -115,7 +114,7 @@ for(nii in 1:niter){
     }
   }
 
-  save(sampleOutputx,file=paste0("Rsrc/virpiSbatch/results/samplexout_",r_no,".rdata")) 
+  save(sampleOutput,file=paste0("Rsrc/virpiSbatch/results/samplexout_",r_no,".rdata")) 
   
 }
   #source("postprocessResults.R")
@@ -146,3 +145,4 @@ for(nii in 1:niter){
 
 #dev.off()
 #print("histograms made")
+setwd("Rsrc/virpiSbatch/")
