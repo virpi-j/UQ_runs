@@ -320,7 +320,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   rm(list=setdiff(ls(), c(toMem,"toMem", "outSums"))) # don't delete result
 
   #print(uncRun)
-  #print(outSums)
+  print(outSums)
   outSums # Output for uncertainty analysis
 }
 
