@@ -108,7 +108,11 @@ for(nii in 1:niter){
     }
     x[,3:5] <- x[,3:5]*cS[j]
     #assign(varNams[j,1], x)
-    sampleOutputx[[j]] <- rbind(sampleOutputx[[j]], x)
+    if(nii == 1){
+      sampleOutput[[j]] <- x
+    } else {
+      sampleOutput[[j]] <- rbind(sampleOutput[[j]], x)
+    }
   }
 
   save(sampleOutputx,file=paste0("Rsrc/virpiSbatch/results/samplexout_",r_no,".rdata")) 
