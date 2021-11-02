@@ -85,7 +85,7 @@ for(nii in 1:niter){
   #sampleXs <- lapply(sampleIDs[1:2], function(jx) {
   #  runModelUQ(jx,  ## Do nothing for 10 seconds
   #  uncRun = TRUE)})      
-  sampleXs <- mclapply(sampleIDs[(1+(nii-1)*5):(nii*5)], function(jx) {
+  sampleXs <- mclapply(sampleIDs[(1+(nii-1)*nParRuns):(nii*nParRuns)], function(jx) {
     runModelUQ(jx,  ## Do nothing for 10 seconds
     uncRun = uncRun)}, 
     mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
