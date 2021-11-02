@@ -82,9 +82,9 @@ for(nii in 1:niter){
   toMem <- ls()
   print("Start running iter ",nii,"/",niter,"...")
   startRun <- Sys.time() 
-  sampleXs <- lapply(sampleIDs[1:2], function(jx) {
-    runModelUQ(jx,  ## Do nothing for 10 seconds
-    uncRun = TRUE)})      
+  #sampleXs <- lapply(sampleIDs[1:2], function(jx) {
+  #  runModelUQ(jx,  ## Do nothing for 10 seconds
+  #  uncRun = TRUE)})      
   sampleXs <- mclapply(sampleIDs[(1+(nii-1)*5):(nii*5)], function(jx) {
     runModelUQ(jx,  ## Do nothing for 10 seconds
     uncRun = uncRun)}, 
