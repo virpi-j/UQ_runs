@@ -74,7 +74,7 @@ if(rcpfile=="CurrClim"){
   load(paste(climatepath, rcpfile,".rdata", sep=""))  
 }
 ##
-niter <- ceiling(nSamples/10)
+niter <- ceiling(nSamples/5)
 
 sampleOutput <- list()
 
@@ -108,8 +108,9 @@ for(nii in 1:niter){
     }
     x[,3:5] <- x[,3:5]*cS[j]
     #assign(varNams[j,1], x)
-    sampleOutputx[[j]][(1+(nii-1)*5):(nii*5),] <- x
+    sampleOutputx[[j]] <- rbind(sampleOutputx[[j]], x)
   }
+
   save(sampleOutputx,file=paste0("Rsrc/virpiSbatch/results/samplexout_",r_no,".rdata")) 
   
 }
