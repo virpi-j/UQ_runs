@@ -27,8 +27,8 @@ funX[match(varNames[c(7,11:12)],varNames[varSel])] <- "baWmean"
 
 #sampleRun <- FALSE
 set.seed(10)
-#uncRun <- TRUE
-uncRun <- FALSE
+uncRun <- TRUE
+#uncRun <- FALSE
 #nSitesRun <- 100
 
 #----------------------------------------------------------------------------
