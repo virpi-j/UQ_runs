@@ -1,9 +1,10 @@
 rm(list=ls())
 sampleID <- 4
 r_no = regions = 1 ### forest center ID (metakeskus) 1:15
-#nSetRuns = 10 #number of set runs
+nSetRuns = 10 #number of set runs
 #harvestscenarios="Base"		##management scenarios it can be  ### c("Low","MaxSust","NoHarv","Base")
 rcpfile="CurrClim"
+ststDeadW<-FALSE
 #regSets<-"maakunta"
 source("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/localSettings.r")
 
@@ -26,20 +27,23 @@ funX[match(varNames[c(7,11:12)],varNames[varSel])] <- "baWmean"
 
 #sampleRun <- FALSE
 set.seed(10)
-uncRun <- TRUE
+#uncRun <- TRUE
+uncRun <- FALSE
 #nSitesRun <- 100
 
 #----------------------------------------------------------------------------
 if(uncRun){ 
   sampleIDs <- 1:nSamples
   area_total <- sum(data.all$area)
-  areas <- data.all$area/area_total
-  
+  areas <- data.all$area
+  areas <- areas/area_total
+  #hist(areas)
   print(paste0("Sample size ",nSitesRun," segments"))
-  opsInd <- matrix(0, nSitesRun, nSamples) 
+  opsInd <- list(); #matrix(0, nSitesRun, nSamples) 
   for(ij in 1:nSamples){ 
-    opsInd[,ij] <- sample(1:nrow(data.all), nSitesRun, replace = TRUE, prob = areas)
+    #opsInd[,ij] <- sample(1:nrow(data.all), nSitesRun, replace = FALSE, prob = areas)
     #opsInd[,ij] <- sample(1:nrow(data.all), nSitesRun, replace = TRUE, prob = areas)
+    opsInd[[ij]] <- sample(1:nrow(data.all), nSitesRun, replace = TRUE, prob = areas)
   }
   save(opsInd,file=paste0("Rsrc/virpiSbatch/results/opsInd_reg",r_no,".rdata")) 
 } else {
@@ -101,14 +105,14 @@ for(nii in 1:niter){
   m <- nrow(sampleXs[[1]])
   n <- length(sampleXs)
   varNams <-  sampleXs[[1]][,"vari"]
-  cS <- c(-44/12/10^12, 16^2, 16^2, 0.16^2)
+  cS <- c(-16*16*44/(12*(10^12)), 16^2, 16^2, 0.16^2)
   # g /m2 /year -> -44/12*16^2/10^12
   for(j in 1:m){
     x <- data.frame()
     for(k in 1:n){
       x <- rbind(x, sampleXs[[k]][j,])
     }
-    x[,3:5] <- x[,3:5]*cS[j]
+    #x[,3:5] <- x[,3:5]*cS[j]
     #assign(varNams[j,1], x)
     if(nii == 1){
       sampleOutput[[j]] <- x
@@ -127,13 +131,11 @@ m <- length(sampleOutput)
 n <- nrow(sampleOutput[[1]])
 pdf(paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID",r_no,"_samplesize",nSitesRun,".pdf"))
 
-cX <- c(16*16,10*10,10*10,1)
-par(mfrow=c(m,3))
-##par(mfrow=c(1,1))
+#par(mfrow=c(m,3))
+#par(mfrow=c(1,1))
 for(j in 1:m){
   x <- sampleOutput[[j]]
   varNams <- x[1,"vari"]
-  #x[,3:5] <- x[,3:5]*cX[j]
   xlims <- c(min(x[,3:5]),max(x[,3:5]))
   for(per in 1:3){
     hist(x[,2+per], main = paste0("period",per), xlab = varNams, xlim = xlims)  

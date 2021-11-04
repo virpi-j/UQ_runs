@@ -10,20 +10,21 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   print(paste("start sample ID: ",sampleID))
   
   if(uncRun){
-    sampleX <- data.all[opsInd[,sampleID],] # choose random set of nSitesRun segments -- TEST / VJ!
+    sampleX <- data.all[opsInd[[sampleID]],] # choose random set of nSitesRun segments -- TEST / VJ!
     area_tot <- sum(data.all$area) # ha
-    area_sample <- length(opsInd[,sampleID])*0.16*0.16 # ha
+    area_sample <- nrow(sampleX)*0.16*0.16 # ha
+    cA <- area_tot/area_sample
   } else {
     sampleX <- ops[[sampleID]]
   }
   sampleX[,area := N*16^2/10000] 
   sampleX[,id:=climID]
-  #if(uncRun){   
-  #  HarvLimX <- harvestLims * sum(sampleX$area)/sum(data.all$area)
-  #} else {
-  HarvLimX <- harvestLims * area_sample/area_tot
-  #}
-  nSample = nrow(sampleX)#200#nrow(data.all)
+  if(uncRun){   
+    HarvLimX <- harvestLims * area_sample/area_tot
+  } else {
+    HarvLimX <- harvestLims * sum(sampleX$area)/sum(data.all$area)
+  }
+  nSample = nrow(sampleX)
   ## Loop management scenarios
   # harvestscenarios = c("Policy", "MaxSust", "Base","Low","Tapio","NoHarv") ## noharv must be the last element otherwise cons area are ignored
 
@@ -51,9 +52,10 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   ## Prepare the same initial state for all harvest scenarios that are simulated in a loop below
   data.sample = sample_data.f(sampleX, nSample)
   if(rcpfile=="CurrClim") data.sample$id <- data.sample$CurrClimID
+  if(uncRun) data.sample$area <- 0.16*0.16
   areas <- data.sample$area
   totAreaSample <- sum(data.sample$area)
-  
+  if(uncRun) totAreaSample <- nSample*0.16*0.16
   clim = prep.climate.f(dat, data.sample, startingYear, nYears)
   
   Region = nfiareas[ID==r_no, Region]
@@ -138,7 +140,6 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   }          
   
   ###calculate clearcutting area for the sample
-  #if(!is.na(cutArX)){
   print("calculating clearcutting areas")
   clcutArX <- clcutAr * sum(areas)/sum(data.all$area)
   clcutArX <- cbind(clcutArX[1:nYears],0.)
@@ -198,6 +199,8 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   }
   
   ####end initialize deadWood Volume
+  
+  ## Results section #########################################################
   if(sampleRun){
     return(list(region = region,initPrebas=initPrebas))
   }else{
@@ -244,7 +247,6 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
         nas <- rbind(nas,nax)
       } 
       if(uncRun){
-        cA <- area_tot/area_sample # ha / ha
         outSums <- rbind(outSums, data.table(vari = varNames[varSel[ij]], 
                                              iter = sampleID, 
                                              per1 = cA*sum(pX[,2]), 
