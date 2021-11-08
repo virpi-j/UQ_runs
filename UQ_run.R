@@ -7,6 +7,8 @@ rcpfile="CurrClim"
 ststDeadW<-FALSE
 #regSets<-"maakunta"
 source("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/localSettings.r")
+nSitesRun <- nSitesRunr
+nSamples <- nSamplesr
 
 UQanalysis <- "True"
 
