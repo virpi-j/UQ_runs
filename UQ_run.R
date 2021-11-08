@@ -118,7 +118,7 @@ for(r_no in 1:19){
       for(k in 1:n){
         x <- rbind(x, sampleXs[[k]][j,])
       }
-      #x[,3:5] <- x[,3:5]*cS[j]
+      x[,3:5] <- x[,3:5]*cS[j]
       #assign(varNams[j,1], x)
       if(nii == 1){
         sampleOutput[[j]] <- x
