@@ -7,8 +7,8 @@ rcpfile="CurrClim"
 ststDeadW<-FALSE
 #regSets<-"maakunta"
 source("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/localSettings.r")
-nSitesRun <- nSitesRunr
-nSamples <- nSamplesr
+#nSitesRun <- nSitesRunr
+#nSamples <- nSamplesr
 
 UQanalysis <- "True"
 
@@ -26,8 +26,8 @@ for(r_no in r_nos){
   source_url("https://raw.githubusercontent.com/ForModLabUHel/IBCcarbon_runs/master/finRuns/Rsrc/settings.r")
   #source("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/localSettings.r")
   #r_no = regions = regions_no 
-  nSitesRun <- nSitesRunr
-  nSamples <- nSamplesr
+  #nSitesRun <- nSitesRunr
+  #nSamples <- nSamplesr
   
   # Give new set of outputs ------------------------------------------------
   varOuts <- c("NEP","GPPTot/1000", "npp","V")
