@@ -20,6 +20,7 @@ source_url("https://raw.githubusercontent.com/virpi-j/UQ_runs/main/functions.R")
 
 for(r_no in 1:19){
   regions_no <- r_no
+  print(paste("start region",r_no))
   source_url("https://raw.githubusercontent.com/ForModLabUHel/IBCcarbon_runs/master/finRuns/Rsrc/settings.r")
   source("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/localSettings.r")
   r_no = regions = regions_no 
