@@ -24,6 +24,8 @@ for(r_no in r_nos){
   source_url("https://raw.githubusercontent.com/ForModLabUHel/IBCcarbon_runs/master/finRuns/Rsrc/settings.r")
   #source("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/localSettings.r")
   #r_no = regions = regions_no 
+  nSitesRun <- nSitesRunr
+  nSamples <- nSamplesr
   
   # Give new set of outputs ------------------------------------------------
   varOuts <- c("NEP","GPPTot/1000", "npp","V")
@@ -124,7 +126,7 @@ for(r_no in r_nos){
         sampleOutput[[j]] <- x
       } else {
         sampleOutput[[j]] <- rbind(sampleOutput[[j]], x)
-        if(j==1){sampleOutput[[j]]["vari"] <- "NEE"}
+        #if(j==1){sampleOutput[[j]]["vari"] <- "NEE"}
       }
     }
 
