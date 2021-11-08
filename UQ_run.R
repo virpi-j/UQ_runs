@@ -13,7 +13,8 @@ UQanalysis <- "True"
 #devtools::source_url("https://raw.githubusercontent.com/ForModLabUHel/IBCcarbon_runs/master/finRuns/Rsrc/sampleRun.r")
 ##### From GitHub
 
-devtools::source_url("https://raw.githubusercontent.com/virpi-j/UQ_runs/main/functions.R")
+devtools::source_url("https://raw.githubusercontent.com/ForModLabUHel/IBCcarbon_runs/master/finRuns/Rsrc/settings.r")
+source_url("https://raw.githubusercontent.com/virpi-j/UQ_runs/main/functions.R")
 #source_url("https://raw.githubusercontent.com/virpi-j/UQ_runs/main/functions.R")
 
 
