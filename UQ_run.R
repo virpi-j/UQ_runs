@@ -1,7 +1,7 @@
 rm(list=ls())
 sampleID <- 4
-r_no = regions = 1 ### forest center ID (metakeskus) 1:15
-nSetRuns = 10 #number of set runs
+#r_no = regions = 1 ### forest center ID (metakeskus) 1:15
+#nSetRuns = 10 #number of set runs
 #harvestscenarios="Base"		##management scenarios it can be  ### c("Low","MaxSust","NoHarv","Base")
 rcpfile="CurrClim"
 ststDeadW<-FALSE
@@ -22,8 +22,8 @@ for(r_no in r_nos){
   regions_no <- r_no
   print(paste("start region",r_no))
   source_url("https://raw.githubusercontent.com/ForModLabUHel/IBCcarbon_runs/master/finRuns/Rsrc/settings.r")
-  source("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/localSettings.r")
-  r_no = regions = regions_no 
+  #source("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/localSettings.r")
+  #r_no = regions = regions_no 
   
   # Give new set of outputs ------------------------------------------------
   varOuts <- c("NEP","GPPTot/1000", "npp","V")
@@ -40,17 +40,17 @@ for(r_no in r_nos){
 
   #----------------------------------------------------------------------------
   if(uncRun){ 
-    sampleIDs <- 1:nSamples
+    sampleIDs <- 1:nSamplesr
     area_total <- sum(data.all$area)
     areas <- data.all$area
     areas <- areas/area_total
     #hist(areas)
-    print(paste0("Sample size ",nSitesRun," segments"))
+    print(paste0("Sample size ",nSitesRunr," segments"))
     opsInd <- list(); #matrix(0, nSitesRun, nSamples) 
-    for(ij in 1:nSamples){ 
+    for(ij in 1:nSamplesr){ 
       #opsInd[,ij] <- sample(1:nrow(data.all), nSitesRun, replace = FALSE, prob = areas)
       #opsInd[,ij] <- sample(1:nrow(data.all), nSitesRun, replace = TRUE, prob = areas)
-      opsInd[[ij]] <- sample(1:nrow(data.all), nSitesRun, replace = TRUE, prob = areas)
+      opsInd[[ij]] <- sample(1:nrow(data.all), nSitesRunr, replace = TRUE, prob = areas)
     }
     save(opsInd,file=paste0("Rsrc/virpiSbatch/results/opsInd_reg",r_no,".rdata")) 
   } else {
@@ -87,7 +87,7 @@ for(r_no in r_nos){
     load(paste(climatepath, rcpfile,".rdata", sep=""))  
   }
   ##
-  niter <- ceiling(nSamples/nParRuns)
+  niter <- ceiling(nSamplesr/nParRuns)
 
   sampleOutput <- list()
 
@@ -103,7 +103,7 @@ for(r_no in r_nos){
       uncRun = uncRun)}, 
       mc.cores = nCores,mc.silent=FALSE)      ## Split this job across 10 cores
     timeRun <- Sys.time() - startRun
-    print(paste0("Run time for ",nParRuns," samples of size ", nSitesRun," = ",timeRun))
+    print(paste0("Run time for ",nParRuns," samples of size ", nSitesRunr," = ",timeRun))
     print("End running...")
 
     save(sampleXs,file=paste0("Rsrc/virpiSbatch/results/samplex_",r_no,".rdata")) 
@@ -124,10 +124,11 @@ for(r_no in r_nos){
         sampleOutput[[j]] <- x
       } else {
         sampleOutput[[j]] <- rbind(sampleOutput[[j]], x)
+        if(j==1){sampleOutput[[j]]["vari"] <- "NEE"}
       }
     }
 
-    save(sampleOutput,file=paste0("Rsrc/virpiSbatch/results/samplexout",r_no,"samplesize",nSitesRun,".rdata")) 
+    save(sampleOutput,file=paste0("Rsrc/virpiSbatch/results/samplexout",r_no,"samplesize",nSitesRunr,".rdata")) 
   
   }
   #source("postprocessResults.R")
@@ -135,7 +136,7 @@ for(r_no in r_nos){
   print("make histograms...")
   m <- length(sampleOutput)
   n <- nrow(sampleOutput[[1]])
-  pdf(paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID",r_no,"_samplesize",nSitesRun,".pdf"))
+  pdf(paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID",r_no,"_samplesize",nSitesRunr,".pdf"))
 
   #par(mfrow=c(m,3))
   par(mfrow=c(1,1))
