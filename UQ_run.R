@@ -138,7 +138,7 @@ for(r_no in 1:19){
   pdf(paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID",r_no,"_samplesize",nSitesRun,".pdf"))
 
   #par(mfrow=c(m,3))
-  #par(mfrow=c(1,1))
+  par(mfrow=c(1,1))
   for(j in 1:m){
     x <- sampleOutput[[j]]
     varNams <- x[1,"vari"]
