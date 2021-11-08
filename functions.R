@@ -252,6 +252,8 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
                                              per1 = cA*sum(pX[,2]), 
                                              per2 = cA*sum(pX[,3]), 
                                              per3 = cA*sum(pX[,4])))
+        #outSums <- rbind(outSums, cbind(data.table(vari = varNames[varSel[ij]], 
+                                             cA = cA, iter = sampleID), pX) )
       } else {
         
         assign(varNames[varSel[ij]],pX)
