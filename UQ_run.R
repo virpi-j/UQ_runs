@@ -30,7 +30,7 @@ for(r_no in r_nos){
   print(paste("start region",r_no,"set size",nSitesRun,"no of samples", nSamplesr))
   
   # Give new set of outputs ------------------------------------------------
-  varOuts <- c("NEP","GPPTot/1000", "npp","V")
+  varOuts <- c("NEP","Vharvested","V","GPPTot/1000","npp")
   varSel <- match(varOuts,varNames)
   funX <- rep("sum",length(varSel))
   funX[match(varNames[c(7,11:12)],varNames[varSel])] <- "baWmean"
