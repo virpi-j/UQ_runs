@@ -12,9 +12,11 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   if(uncRun){
     sampleX <- data.all[opsInd[[sampleID]],] # choose random set of nSitesRun segments -- TEST / VJ!
     area_tot <- sum(data.all$area) # ha
-    area_sample <- nrow(sampleX)*0.16*0.16 # ha
-    cA <- area_tot/area_sample  
     sampleX[,area := 16^2/10000] 
+    area_sample <- nrow(sampleX)*0.16*0.16 # ha
+    print(sum(sampleX$area))
+    print(area_sample)
+    cA <- area_tot/area_sample  
 
   } else {
     sampleX <- ops[[sampleID]]
