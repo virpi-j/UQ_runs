@@ -13,7 +13,6 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
     sampleX <- data.all[opsInd[[sampleID]],] # choose random set of nSitesRun segments -- TEST / VJ!
     area_tot <- sum(data.all$area) # ha
     sampleX[,area := 16^2/10000] 
-    print(nfiareas[ID==r_no, VOL_fraction])
     area_sample <- sum(sampleX$area) # ha
     cA <- area_tot/area_sample  
   } else {
@@ -128,7 +127,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
       HarvLim1 <- cbind(roundWood,enWood)
     }
   }else{
-    HarvLim1 <- HarvLimMaak*1000*sum(areas)/sum(data.all$area)
+    HarvLim1 <- HarvLimMaak*1000*sum(areas)/sum(data.all$area)/1000
     if(harscen == "Low"){ HarvLim1 <- HarvLimMaak * 0.6}
     if(harscen == "MaxSust"){HarvLim1 <- HarvLimMaak * 1.2}
     if(harscen == "NoHarv"){HarvLim1 <- HarvLimMaak * 0.
