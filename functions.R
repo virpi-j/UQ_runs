@@ -13,11 +13,13 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
     sampleX <- data.all[opsInd[[sampleID]],] # choose random set of nSitesRun segments -- TEST / VJ!
     area_tot <- sum(data.all$area) # ha
     area_sample <- nrow(sampleX)*0.16*0.16 # ha
-    cA <- area_tot/area_sample
+    cA <- area_tot/area_sample  
+    sampleX[,area := 16^2/10000] 
+
   } else {
     sampleX <- ops[[sampleID]]
+    sampleX[,area := N*16^2/10000] 
   }
-  sampleX[,area := N*16^2/10000] 
   sampleX[,id:=climID]
   #if(uncRun){   
   #  HarvLimX <- harvestLims * area_sample/area_tot
