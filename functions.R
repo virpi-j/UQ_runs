@@ -19,11 +19,11 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   }
   sampleX[,area := N*16^2/10000] 
   sampleX[,id:=climID]
-  if(uncRun){   
-    HarvLimX <- harvestLims * area_sample/area_tot
-  } else {
+  #if(uncRun){   
+  #  HarvLimX <- harvestLims * area_sample/area_tot
+  #} else {
     HarvLimX <- harvestLims * sum(sampleX$area)/sum(data.all$area)
-  }
+  #}
   nSample = nrow(sampleX)
   ## Loop management scenarios
   # harvestscenarios = c("Policy", "MaxSust", "Base","Low","Tapio","NoHarv") ## noharv must be the last element otherwise cons area are ignored
@@ -52,10 +52,10 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
   ## Prepare the same initial state for all harvest scenarios that are simulated in a loop below
   data.sample = sample_data.f(sampleX, nSample)
   if(rcpfile=="CurrClim") data.sample$id <- data.sample$CurrClimID
-  if(uncRun) data.sample$area <- 0.16*0.16
+  #if(uncRun) data.sample$area <- 0.16*0.16
   areas <- data.sample$area
   totAreaSample <- sum(data.sample$area)
-  if(uncRun) totAreaSample <- nSample*0.16*0.16
+  #if(uncRun) totAreaSample <- nSample*0.16*0.16
   clim = prep.climate.f(dat, data.sample, startingYear, nYears)
   
   Region = nfiareas[ID==r_no, Region]
