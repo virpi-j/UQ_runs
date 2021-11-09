@@ -27,7 +27,7 @@ for(r_no in r_nos){
   #r_no = regions = regions_no 
   #nSitesRun <- nSitesRunr
   #nSamples <- nSamplesr
-  print(paste("start region",r_no,"set size",nSitesRun,"no of samples", nSamplesr))
+  print(paste("start region",r_no,"- set size",nSitesRun,"- no of samples", nSamplesr))
   
   # Give new set of outputs ------------------------------------------------
   varOuts <- c("NEP","Vharvested","V","GPPTot/1000","npp")
