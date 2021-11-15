@@ -147,13 +147,14 @@ for(r_no in r_nos){
   for(j in 1:m){
     x <- sampleOutput[[j]]
     varNams <- x[1,"vari"]
-    png(file = paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID",r_no,"_samplesize",nSitesRunr,"_var",varNams,".png"))
+    png(file = paste0("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/figures/results_regionID",r_no,"_",nSitesRunr,"_",varNams,".png"))
     xlims <- c(min(x[,3:5]),max(x[,3:5]))
     par(mfrow=c(1,3))
     for(per in 1:3){
       hist(x[,2+per], main = paste0("period",per), xlab = varNams, xlim = xlims)  
     }
     dev.off()
+    print(colmeans(x[,3:5]))
   }
   print("histograms made")
   setwd("Rsrc/virpiSbatch/")
