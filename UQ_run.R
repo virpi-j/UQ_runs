@@ -128,7 +128,7 @@ for(r_no in r_nos){
         sampleOutput[[j]] <- x
       } else {
         sampleOutput[[j]] <- rbind(sampleOutput[[j]], x)
-        #if(j==1){sampleOutput[[j]]["vari"] <- "NEE"}
+        if(j==1){sampleOutput[[j]][,"vari"] <- "NEE"}
       }
     }
 

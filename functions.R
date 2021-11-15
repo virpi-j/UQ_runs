@@ -127,7 +127,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
       HarvLim1 <- cbind(roundWood,enWood)
     }
   }else{
-    HarvLim1 <- HarvLimMaak*1000*sum(areas)/sum(data.all$area)/1000
+    HarvLim1 <- HarvLimMaak*1000*sum(areas)/sum(data.all$area)
     if(harscen == "Low"){ HarvLim1 <- HarvLimMaak * 0.6}
     if(harscen == "MaxSust"){HarvLim1 <- HarvLimMaak * 1.2}
     if(harscen == "NoHarv"){HarvLim1 <- HarvLimMaak * 0.
