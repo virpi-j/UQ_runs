@@ -32,7 +32,7 @@ for(r_no in r_nos){
   # Give new set of outputs ------------------------------------------------
   varOuts <- c("NEP","V","GPPTot/1000","npp","VroundWood")
 #  cS <- c(-16^2*44/(12*(10^12)), 0.16^2,16^2, 16^2, 0.16^2) # multipliers for tot.sums
-  cS <- c(-100*44/(12*(10^12)), 1,100, 100, 1) # multipliers for tot.sums
+  cS <- c(-16^2*44/(12*(10^12)), 0.16^2,16^2, 16^2, 0.16^2) # multipliers for tot.sums
   
   varSel <- match(varOuts,varNames)
   funX <- rep("sum",length(varSel))
