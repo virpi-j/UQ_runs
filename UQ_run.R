@@ -31,6 +31,8 @@ for(r_no in r_nos){
   
   # Give new set of outputs ------------------------------------------------
   varOuts <- c("NEP","V","GPPTot/1000","npp","VroundWood")
+  cS <- c(-16^2*44/(12*(10^12)), 0.16^2,16^2, 16^2, 0.16^2) # multipliers for tot.sums
+  
   varSel <- match(varOuts,varNames)
   funX <- rep("sum",length(varSel))
   funX[match(varNames[c(7,11:12)],varNames[varSel])] <- "baWmean"
@@ -115,7 +117,6 @@ for(r_no in r_nos){
     m <- nrow(sampleXs[[1]])
     n <- length(sampleXs)
     varNams <-  sampleXs[[1]][,"vari"]
-    cS <- c(-16*16*44/(12*(10^12)), 16^2, 16^2, 0.16^2)
     # g /m2 /year -> -44/12*16^2/10^12
     for(j in 1:m){
       x <- data.frame()
