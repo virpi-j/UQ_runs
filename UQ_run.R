@@ -154,7 +154,7 @@ for(r_no in r_nos){
       hist(x[,2+per], main = paste0("period",per), xlab = varNams, xlim = xlims)  
     }
     dev.off()
-    print(colmeans(x[,3:5]))
+    print(colMeans(x[,3:5]))
   }
   print("histograms made")
   setwd("Rsrc/virpiSbatch/")
