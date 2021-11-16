@@ -14,7 +14,7 @@ runModelUQ <- function(sampleID,sampleRun=FALSE,ststDeadW=FALSE,
     area_tot <- sum(data.all$area) # ha
     sampleX[,area := 16^2/10000] 
     area_sample <- sum(sampleX$area) # ha
-    cA <- area_tot/area_sample  
+    cA <- area_tot/nrow(sampleX) #area_sample  
   } else {
     sampleX <- ops[[sampleID]]
     sampleX[,area := N*16^2/10000] 
