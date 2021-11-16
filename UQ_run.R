@@ -25,7 +25,7 @@ for(r_no in r_nos){
   source_url("https://raw.githubusercontent.com/ForModLabUHel/IBCcarbon_runs/master/finRuns/Rsrc/settings.r")
   #source("/scratch/project_2000994/PREBASruns/finRuns/Rsrc/virpiSbatch/localSettings.r")
   #r_no = regions = regions_no 
-  #nSitesRun <- nSitesRunr
+  nSitesRun <- nSitesRunr
   #nSamples <- nSamplesr
   print(paste("start region",r_no,"- set size",nSitesRun,"- no of samples", nSamplesr))
   
@@ -33,7 +33,6 @@ for(r_no in r_nos){
   varOuts <- c("NEP","V","npp","VroundWood")
 #  cS <- c(-16^2*44/(12*(10^12)), 0.16^2,16^2, 16^2, 0.16^2) # multipliers for tot.sums
   cS <- c(-100^2*44/12, 1, 100^2, 1) # multipliers for tot.sums
-  units_hist <- c(10^-12,10^-6,1,10^-6)
   
   varSel <- match(varOuts,varNames)
   funX <- rep("sum",length(varSel))
@@ -143,7 +142,8 @@ for(r_no in r_nos){
   print("make histograms...")
   m <- length(sampleOutput)
   n <- nrow(sampleOutput[[1]])
-
+  units_hist <- c(10^-12,10^-6,1,10^-6)
+  
   #par(mfrow=c(m,3))
   for(j in 1:m){
     x <- sampleOutput[[j]]
